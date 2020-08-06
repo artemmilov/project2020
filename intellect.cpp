@@ -12,11 +12,11 @@ void manual_controller::drive(dirt* p_dirt)
 	{
 		if (!wasZ)
 		{
-			if (p_dirt->get_position() == stick_left || p_dirt->get_position() == in_right_down_border || p_dirt->get_position() == in_right_up_border)
+			if (p_dirt->get_position() == stick_left/* || p_dirt->get_position() == in_right_down_border*/ || p_dirt->get_position() == in_right_up_border)
 			{
 				go_right = true;
 			}
-			if (p_dirt->get_position() == stick_right || p_dirt->get_position() == in_left_down_border || p_dirt->get_position() == in_left_up_border)
+			if (p_dirt->get_position() == stick_right/* || p_dirt->get_position() == in_left_down_border*/ || p_dirt->get_position() == in_left_up_border)
 			{
 				go_left = true;
 			}
@@ -28,9 +28,9 @@ void manual_controller::drive(dirt* p_dirt)
 	{
 		wasZ = false;
 	}
-	if (p_dirt->get_position() != stick_right && p_dirt->get_position() != in_left_down_border && p_dirt->get_position() != in_left_up_border && p_dirt->get_position() != flying)
+	if (p_dirt->get_position() != stick_right/* && p_dirt->get_position() != in_left_down_border*/ && p_dirt->get_position() != in_left_up_border && p_dirt->get_position() != flying)
 		go_left = false;
-	if (p_dirt->get_position() != stick_left && p_dirt->get_position() != in_right_down_border && p_dirt->get_position() != in_right_up_border && p_dirt->get_position() != flying)
+	if (p_dirt->get_position() != stick_left/* && p_dirt->get_position() != in_right_down_border*/ && p_dirt->get_position() != in_right_up_border && p_dirt->get_position() != flying)
 		go_right = false;
 	if (go_left)
 		p_dirt->run_left();
@@ -65,11 +65,11 @@ void manual_controller::drive(drop* p_drop)
 	{
 		if (!wasZ)
 		{
-			if (p_drop->get_position() == stick_left || p_drop->get_position() == in_right_down_border || p_drop->get_position() == in_right_up_border)
+			if (p_drop->get_position() == stick_left/* || p_drop->get_position() == in_right_down_border*/ || p_drop->get_position() == in_right_up_border)
 			{
 				go_right = true;
 			}
-			if (p_drop->get_position() == stick_right || p_drop->get_position() == in_left_down_border || p_drop->get_position() == in_left_up_border)
+			if (p_drop->get_position() == stick_right/* || p_drop->get_position() == in_left_down_border*/ || p_drop->get_position() == in_left_up_border)
 			{
 				go_left = true;
 			}
@@ -81,9 +81,9 @@ void manual_controller::drive(drop* p_drop)
 	{
 		wasZ = false;
 	}
-	if (p_drop->get_position() != stick_right && p_drop->get_position() != in_left_down_border && p_drop->get_position() != in_left_up_border && p_drop->get_position() != flying)
+	if (p_drop->get_position() != stick_right/* && p_drop->get_position() != in_left_down_border*/ && p_drop->get_position() != in_left_up_border && p_drop->get_position() != flying)
 		go_left = false;
-	if (p_drop->get_position() != stick_left && p_drop->get_position() != in_right_down_border && p_drop->get_position() != in_right_up_border && p_drop->get_position() != flying)
+	if (p_drop->get_position() != stick_left/* && p_drop->get_position() != in_right_down_border*/ && p_drop->get_position() != in_right_up_border && p_drop->get_position() != flying)
 		go_right = false;
 	if (go_left)
 		p_drop->run_left();

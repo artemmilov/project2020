@@ -46,7 +46,7 @@ public:
 	float get_dist_right();
 	float get_dist_up();
 	float get_dist_down();
-	float get_stickiness();
+	float is_sticky();
 	tilt_enum get_tilt();
 	direct_enum get_dir();
 	int get_health();
