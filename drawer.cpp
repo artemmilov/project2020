@@ -1,5 +1,6 @@
 #include "drawer.h"
 #pragma warning(disable : 4996)
+// Just for fun!
 
 using namespace std;
 using namespace sf;
