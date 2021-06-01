@@ -118,22 +118,18 @@ void mechanical_interactor::old_determ_position(map_class* p_game_mp, entity* p_
 	if (!can_left)
 		can_right = true;
 
-	//if (p_et->is_sticky())
-	//{
+	if (p_et->is_sticky())
+	{
 		if (can_left && can_right && can_up && can_down)
 		{
 			p_et->set_position(flying);
 			for (int i(0); i < v_actual_static_bodies_id.size(); i++)
 			{
 				temp_bd_ent.init(p_et->get_x() - near_body_eps_for_stick_right, p_et->get_y() - near_body_eps_for_stick_down, p_et->get_width(), p_et->get_height(), 0, 0, 0);
-				if (old_does_static_body_interfere_body_entity(&p_game_mp->get_map_static_bodies()[v_actual_static_bodies_id[i]], &temp_bd_ent))
-					p_et->set_position(in_right_down_border);
 				temp_bd_ent.init(p_et->get_x() - near_body_eps_for_stick_right, p_et->get_y() + near_body_eps_for_stick_up, p_et->get_width(), p_et->get_height(), 0, 0, 0);
 				if (old_does_static_body_interfere_body_entity(&p_game_mp->get_map_static_bodies()[v_actual_static_bodies_id[i]], &temp_bd_ent))
 					p_et->set_position(in_right_up_border);
 				temp_bd_ent.init(p_et->get_x() + near_body_eps_for_stick_left, p_et->get_y() - near_body_eps_for_stick_down, p_et->get_width(), p_et->get_height(), 0, 0, 0);
-				if (old_does_static_body_interfere_body_entity(&p_game_mp->get_map_static_bodies()[v_actual_static_bodies_id[i]], &temp_bd_ent))
-					p_et->set_position(in_left_down_border);
 				temp_bd_ent.init(p_et->get_x() + near_body_eps_for_stick_left, p_et->get_y() + near_body_eps_for_stick_down, p_et->get_width(), p_et->get_height(), 0, 0, 0);
 				if (old_does_static_body_interfere_body_entity(&p_game_mp->get_map_static_bodies()[v_actual_static_bodies_id[i]], &temp_bd_ent))
 					p_et->set_position(in_left_up_border);
@@ -145,24 +141,18 @@ void mechanical_interactor::old_determ_position(map_class* p_game_mp, entity* p_
 			p_et->set_position(stick_left);
 		if (can_left && can_right && can_up && !can_down)
 			p_et->set_position(on_ground);
-		if (can_left && can_right && !can_up && can_down)
-			p_et->set_position(stick_up);
 		if (can_left && !can_right && can_up && !can_down)
 			p_et->set_position(in_right_down_angle);
 		if (!can_left && can_right && can_up && !can_down)
 			p_et->set_position(in_left_down_angle);
-		if (can_left && !can_right && !can_up && can_down)
-			p_et->set_position(in_right_up_angle);
-		if (!can_left && can_right && !can_up && can_down)
-			p_et->set_position(in_left_up_angle);
-	//}
-	//else
-	//{
-	//	if (can_down)
-	//		p_et->set_position(flying);
-	//	if (!can_down)
-	//		p_et->set_position(on_ground);
-	//}
+	}
+	else
+	{
+		if (can_down)
+			p_et->set_position(flying);
+		if (!can_down)
+			p_et->set_position(on_ground);
+	}
 }
 bool mechanical_interactor::old_handle(map_class* p_game_mp, entity* p_et)
 {
@@ -265,15 +255,15 @@ void mechanical_interactor::determ_position(map_class* p_game_mp, entity* p_et)
 	if (!can_left)
 		can_right = true;
 
-	//if (!p_et->is_sticky())
-	//{
-	//	if (can_down)
-	//		p_et->set_position(flying);
-	//	if (!can_down)
-	//		p_et->set_position(on_ground);
-	//}
-	//else
-	//{
+	if (!p_et->is_sticky())
+	{
+		if (can_down)
+			p_et->set_position(flying);
+		if (!can_down)
+			p_et->set_position(on_ground);
+	}
+	else
+	{
 		if (can_left && can_right && can_up && can_down)
 			p_et->set_position(flying);
 		if (can_left && !can_right && can_up && can_down)
@@ -282,16 +272,10 @@ void mechanical_interactor::determ_position(map_class* p_game_mp, entity* p_et)
 			p_et->set_position(stick_left);
 		if (can_left && can_right && can_up && !can_down)
 			p_et->set_position(on_ground);
-		if (can_left && can_right && !can_up && can_down)
-			p_et->set_position(stick_up);
 		if (can_left && !can_right && can_up && !can_down)
 			p_et->set_position(in_right_down_angle);
 		if (!can_left && can_right && can_up && !can_down)
 			p_et->set_position(in_left_down_angle);
-		if (can_left && !can_right && !can_up && can_down)
-			p_et->set_position(in_right_up_angle);
-		if (!can_left && can_right && !can_up && can_down)
-			p_et->set_position(in_left_up_angle);
 
 
 		if (p_et->get_dist_left() < near_eps)
@@ -315,30 +299,6 @@ void mechanical_interactor::determ_position(map_class* p_game_mp, entity* p_et)
 				pair <float, float> d1 = { p_game_mp->get_map_static_bodies()[v_actual_static_bodies_id[i]].get_x(), p_game_mp->get_map_static_bodies()[v_actual_static_bodies_id[i]].get_y() + p_game_mp->get_map_static_bodies()[v_actual_static_bodies_id[i]].get_height() };
 
 				float new_v_x = p_et->get_v_x(), new_v_y = p_et->get_v_y();
-				if ((abs(a0.first - c1.first) < near_eps) && (abs(a0.second - c1.second) < near_eps))
-				{
-					p_et->set_position(in_right_down_border);
-					if (p_et->get_v_x() >= 0)
-						new_v_x = (c1.first - a0.first) / time;
-					else
-						new_v_x = p_et->get_v_x();
-					if (p_et->get_v_y() >= 0)
-						new_v_y = (c1.second - a0.second) / time;
-					else
-						new_v_y = p_et->get_v_y();
-				}
-				if ((abs(b0.first - d1.first) < near_eps) && (abs(b0.second - d1.second) < near_eps))
-				{
-					p_et->set_position(in_left_down_border);
-					if (p_et->get_v_x() <= 0)
-						new_v_x = (d1.first - b0.first) / time;
-					else
-						new_v_x = p_et->get_v_x();
-					if (p_et->get_v_y() >= 0)
-						new_v_y = (d1.second - b0.second) / time;
-					else
-						new_v_y = p_et->get_v_y();
-				}
 				if ((abs(c0.first - a1.first) < near_eps) && (abs(c0.second - a1.second) < near_eps))
 				{
 					p_et->set_position(in_left_up_border);
@@ -365,7 +325,7 @@ void mechanical_interactor::determ_position(map_class* p_game_mp, entity* p_et)
 				}
 				p_et->set_speed(new_v_x, new_v_y);
 			}
-	//}
+	}
 }
 bool mechanical_interactor::handle(map_class* p_game_mp, entity* p_et)
 {

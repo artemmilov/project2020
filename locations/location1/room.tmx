@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="left-up" width="10" height="10" tilewidth="150" tileheight="150" infinite="0" nextlayerid="7" nextobjectid="118">
+ <tileset firstgid="1" name="map3" tilewidth="150" tileheight="150" tilecount="24" columns="6">
+  <image source="../../images/map3.png" width="900" height="600"/>
+ </tileset>
+ <layer id="1" name="Слой тайлов 1" width="10" height="10">
+  <data encoding="csv">
+19,13,13,13,13,13,13,13,13,20,
+19,13,13,13,13,13,13,13,13,13,
+19,13,13,13,13,13,13,13,13,20,
+19,13,13,13,13,13,22,13,13,20,
+16,2,21,13,13,13,13,13,13,20,
+19,13,13,13,13,13,13,13,13,20,
+19,13,13,13,22,13,13,13,13,20,
+19,13,13,13,13,13,13,22,13,20,
+13,13,13,13,13,13,13,13,13,20,
+16,16,22,22,22,16,22,22,16,16
+</data>
+ </layer>
+ <objectgroup id="2" name="static_body">
+  <object id="1" x="0" y="0" width="150" height="150"/>
+  <object id="2" x="0" y="150" width="150" height="150"/>
+  <object id="3" x="0" y="300" width="150" height="150"/>
+  <object id="4" x="0" y="450" width="150" height="150"/>
+  <object id="5" x="0" y="600" width="150" height="150"/>
+  <object id="6" x="0" y="750" width="150" height="150"/>
+  <object id="7" x="0" y="900" width="150" height="150"/>
+  <object id="8" x="0" y="1050" width="150" height="150"/>
+  <object id="10" x="0" y="1350" width="150" height="150"/>
+  <object id="11" x="150" y="1350" width="150" height="150"/>
+  <object id="12" x="300" y="1350" width="150" height="150"/>
+  <object id="13" x="450" y="1350" width="150" height="150"/>
+  <object id="14" x="600" y="1350" width="150" height="150"/>
+  <object id="15" x="750" y="1350" width="150" height="150"/>
+  <object id="16" x="900" y="1350" width="150" height="150"/>
+  <object id="17" x="1050" y="1350" width="150" height="150"/>
+  <object id="18" x="1200" y="1350" width="150" height="150"/>
+  <object id="19" x="1350" y="1350" width="150" height="150"/>
+  <object id="20" x="1350" y="0" width="150" height="150"/>
+  <object id="21" x="1350" y="300" width="150" height="150"/>
+  <object id="22" x="1350" y="450" width="150" height="150"/>
+  <object id="23" x="1350" y="600" width="150" height="150"/>
+  <object id="24" x="1350" y="750" width="150" height="150"/>
+  <object id="25" x="1350" y="900" width="150" height="150"/>
+  <object id="26" x="1350" y="1050" width="150" height="150"/>
+  <object id="27" x="1350" y="1200" width="150" height="150"/>
+  <object id="28" x="600" y="900" width="150" height="150"/>
+  <object id="29" x="900" y="450" width="150" height="150"/>
+  <object id="30" x="1050" y="1050" width="150" height="150"/>
+  <object id="31" x="300" y="600" width="150" height="150"/>
+  <object id="32" x="150" y="675" width="150" height="75"/>
+  <object id="66" x="0" y="-150" width="150" height="150"/>
+  <object id="67" x="150" y="-300" width="150" height="150"/>
+  <object id="72" x="-450" y="1200" width="150" height="150"/>
+  <object id="75" x="1500" y="0" width="150" height="150"/>
+  <object id="76" x="1500" y="300" width="150" height="150"/>
+  <object id="77" x="1350" y="-150" width="150" height="150"/>
+  <object id="91" x="0" y="-300" width="150" height="150"/>
+  <object id="92" x="300" y="-300" width="150" height="150"/>
+  <object id="93" x="450" y="-300" width="150" height="150"/>
+  <object id="94" x="600" y="-300" width="150" height="150"/>
+  <object id="95" x="750" y="-300" width="150" height="150"/>
+  <object id="96" x="900" y="-300" width="150" height="150"/>
+  <object id="97" x="1050" y="-300" width="150" height="150"/>
+  <object id="98" x="1200" y="-300" width="150" height="150"/>
+  <object id="99" x="1350" y="-300" width="150" height="150"/>
+  <object id="100" x="-450" y="1350" width="450" height="150"/>
+  <object id="101" x="-450" y="1050" width="450" height="150"/>
+  <object id="102" x="1650" y="0" width="150" height="150"/>
+  <object id="103" x="1650" y="150" width="150" height="150"/>
+  <object id="104" x="1650" y="300" width="150" height="150"/>
+ </objectgroup>
+ <objectgroup id="4" name="checkpoint">
+  <object id="79" name="finish" x="150" y="600" width="150" height="75"/>
+ </objectgroup>
+ <objectgroup id="5" name="room_transition">
+  <object id="114" name="trans1" x="1500" y="150" width="150" height="150"/>
+  <object id="117" name="trans2" x="-300" y="1200" width="150" height="150"/>
+ </objectgroup>
+ <objectgroup id="3" name="dirt_circumstances">
+  <object id="34" name="damage" x="1345" y="0" width="5" height="150"/>
+  <object id="35" name="damage" x="1345" y="300" width="5" height="150"/>
+  <object id="36" name="damage" x="1345" y="450" width="5" height="150"/>
+  <object id="37" name="damage" x="1345" y="600" width="5" height="150"/>
+  <object id="38" name="damage" x="1345" y="750" width="5" height="150"/>
+  <object id="39" name="damage" x="1345" y="900" width="5" height="150"/>
+  <object id="40" name="damage" x="1345" y="1050" width="5" height="150"/>
+  <object id="41" name="damage" x="1345" y="1200" width="5" height="150"/>
+  <object id="46" name="damage" x="600" y="895" width="150" height="5"/>
+  <object id="47" name="damage" x="1050" y="1045" width="150" height="5"/>
+  <object id="49" name="damage" x="300" y="1345" width="150" height="5"/>
+  <object id="50" name="damage" x="450" y="1345" width="150" height="5"/>
+  <object id="51" name="damage" x="600" y="1345" width="150" height="5"/>
+  <object id="52" name="damage" x="900" y="1345" width="150" height="5"/>
+  <object id="53" name="damage" x="1050" y="1345" width="150" height="5"/>
+  <object id="54" name="damage" x="150" y="450" width="5" height="150"/>
+  <object id="55" name="damage" x="150" y="300" width="5" height="150"/>
+  <object id="56" name="damage" x="150" y="150" width="5" height="150"/>
+  <object id="57" name="damage" x="150" y="0" width="5" height="150"/>
+  <object id="58" name="damage" x="150" y="750" width="5" height="150"/>
+  <object id="59" name="damage" x="150" y="900" width="5" height="150"/>
+  <object id="60" name="damage" x="150" y="1050" width="5" height="150"/>
+  <object id="61" name="replenish" x="150" y="600" width="150" height="75"/>
+  <object id="80" name="unstick" x="1340" y="-150" width="10" height="150"/>
+  <object id="82" name="unstick" x="1200" y="-150" width="150" height="10"/>
+  <object id="83" name="unstick" x="1050" y="-150" width="150" height="10"/>
+  <object id="84" name="unstick" x="900" y="-150" width="150" height="10"/>
+  <object id="85" name="unstick" x="750" y="-150" width="150" height="10"/>
+  <object id="86" name="unstick" x="600" y="-150" width="150" height="10"/>
+  <object id="87" name="unstick" x="150" y="-150" width="150" height="10"/>
+  <object id="88" name="unstick" x="300" y="-150" width="150" height="10"/>
+  <object id="89" name="unstick" x="450" y="-150" width="150" height="10"/>
+  <object id="90" name="unstick" x="150" y="-150" width="10" height="150"/>
+  <object id="105" name="unstick" x="-300" y="1200" width="10" height="150"/>
+  <object id="106" name="unstick" x="-300" y="1200" width="300" height="10"/>
+  <object id="111" name="unstick" x="1640" y="150" width="10" height="150"/>
+  <object id="112" name="unstick" x="1500" y="150" width="150" height="10"/>
+  <object id="115" name="damage" x="300" y="750" width="150" height="5"/>
+  <object id="116" name="damage" x="900" y="445" width="150" height="5"/>
+ </objectgroup>
+</map>

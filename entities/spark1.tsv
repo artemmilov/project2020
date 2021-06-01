@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity max_health="3" run_speed="600" jump_speed="1500">
+ <body width="30" height="30" sticky="1"/>
+ <tileset firstgid="1" name="map" tilewidth="100" tileheight="100" tilecount="12" columns="5">
+ <image source="../images/spark.png" width="500" height="300"/>
+</tileset>
+ <statuses>
+  <calm image_indent_x_up="-35" image_indent_y_up="-35" image_indent_x_down="-35" image_indent_y_down="-35" image_indent_x_left="-35" image_indent_y_left="-35" image_indent_x_right="-35" image_indent_y_right="-35">
+1
+</calm>
+  <run image_indent_x_up="-35" image_indent_y_up="-35" image_indent_x_down="-35" image_indent_y_down="-35" image_indent_x_left="-35" image_indent_y_left="-35" image_indent_x_right="-35" image_indent_y_right="-35">
+1,2,3,4,5,9,10,11,12
+</run>
+  <jump image_indent_x_up="-35" image_indent_y_up="-35" image_indent_x_down="-35" image_indent_y_down="-35" image_indent_x_left="-35" image_indent_y_left="-35" image_indent_x_right="-35" image_indent_y_right="-35">
+1
+</jump>
+  <turn image_indent_x_up="-35" image_indent_y_up="-35" image_indent_x_down="-35" image_indent_y_down="-35" image_indent_x_left="-35" image_indent_y_left="-35" image_indent_x_right="-35" image_indent_y_right="-35">
+1
+</turn>
+  <fly image_indent_x_up="-35" image_indent_y_up="-35" image_indent_x_down="-35" image_indent_y_down="-35" image_indent_x_left="-35" image_indent_y_left="-35" image_indent_x_right="-35" image_indent_y_right="-35">
+6
+</fly>
+  <stick image_indent_x_up="-35" image_indent_y_up="-35" image_indent_x_down="-35" image_indent_y_down="-35" image_indent_x_left="-35" image_indent_y_left="-35" image_indent_x_right="-35" image_indent_y_right="-35">
+1
+</stick>
+  <in_corner image_indent_x_up="-10" image_indent_y_up="-15" image_indent_x_down="-60" image_indent_y_down="-55" image_indent_x_left="-15" image_indent_y_left="-60" image_indent_x_right="-55" image_indent_y_right="-10">
+7
+</in_corner>
+  <in_border image_indent_x_up="-10" image_indent_y_up="-15" image_indent_x_down="-60" image_indent_y_down="-55" image_indent_x_left="-15" image_indent_y_left="-60" image_indent_x_right="-55" image_indent_y_right="-10">
+8
+</in_border>
+</statuses>
+<mud damage_value="1" length="100">
+ <image source="../images/mud.png" width="200" height="30"/>
+</mud>
+</entity>

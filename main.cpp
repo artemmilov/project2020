@@ -14,7 +14,7 @@ int main()
 	bool Esc_press = false;
 	bool active = true;
 	core test_level;
-	test_level.start(window, "location1", "room", 78);
+	test_level.start(window, "location1", "room", 79);
 	while (window.isOpen())
 	{
 		float time = clock.getElapsedTime().asSeconds();
@@ -49,7 +49,7 @@ int main()
 			Esc_press = false;
 
 		window.clear();
-		test_level.update(time);
+		cout << test_level.update(time) << "\t\t\t";
 		window.display();
 	}
 

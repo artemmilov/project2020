@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="left-up" width="10" height="10" tilewidth="150" tileheight="150" infinite="0" nextlayerid="5" nextobjectid="15">
+ <tileset firstgid="1" name="map3" tilewidth="150" tileheight="150" tilecount="24" columns="6">
+  <image source="../images/map3.png" width="900" height="600"/>
+ </tileset>
+ <layer id="1" name="Слой тайлов 1" width="10" height="10">
+  <data encoding="csv">
+16,13,13,13,13,13,13,13,13,16,
+16,13,13,13,13,13,13,13,13,16,
+16,16,16,16,16,16,16,13,13,16,
+16,13,13,13,13,13,13,13,13,16,
+16,13,13,13,13,13,13,13,13,16,
+16,13,13,13,13,13,13,13,13,16,
+16,16,16,16,16,16,16,13,13,16,
+16,13,13,13,13,13,13,13,13,16,
+13,13,13,13,13,13,13,13,13,16,
+16,16,16,16,16,16,16,16,16,16
+</data>
+ </layer>
+ <objectgroup id="2" name="static_body">
+  <object id="1" x="-450" y="1350" width="1950" height="150"/>
+  <object id="2" x="0" y="-300" width="150" height="1500"/>
+  <object id="3" x="150" y="300" width="900" height="150"/>
+  <object id="4" x="150" y="900" width="900" height="150"/>
+  <object id="5" x="1350" y="-300" width="150" height="1650"/>
+  <object id="7" x="150" y="-300" width="1200" height="150"/>
+  <object id="11" x="-450" y="1050" width="450" height="150"/>
+  <object id="12" x="-450" y="1200" width="150" height="150"/>
+ </objectgroup>
+ <objectgroup id="4" name="dirt_circumstances">
+  <object id="8" name="unstick" x="150" y="-150" width="10" height="150"/>
+  <object id="9" name="unstick" x="1340" y="-150" width="10" height="150"/>
+  <object id="10" name="unstick" x="150" y="-150" width="1200" height="10"/>
+  <object id="13" name="unstick" x="-300" y="1200" width="10" height="150"/>
+  <object id="14" name="unstick" x="-300" y="1200" width="300" height="10"/>
+ </objectgroup>
+ <objectgroup id="3" name="room_transition">
+  <object id="6" name="trans1" x="-300" y="1200" width="150" height="150"/>
+ </objectgroup>
+</map>

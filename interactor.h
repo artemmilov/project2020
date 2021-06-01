@@ -8,7 +8,7 @@
 class mechanical_interactor
 {
 private:
-	const float near_eps = 11;
+	const float near_eps = 10;
 
 	float time;
 	std::vector <unsigned int> v_actual_static_bodies_id;

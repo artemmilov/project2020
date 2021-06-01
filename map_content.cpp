@@ -32,10 +32,10 @@ bool entity::init(tmx_file tmx_entity, float X, float Y, unsigned int ID)
 
 	ok = is_number(body_tage.get_characteristic("width"));
 	ok = ok && is_number(body_tage.get_characteristic("height"));
-	ok = ok && is_number(body_tage.get_characteristic("stickiness"));
+	ok = ok && is_number(body_tage.get_characteristic("sticky"));
 	if (!ok)
 		return false;
-	if (!matter_part.init(X, Y, atoi(body_tage.get_characteristic("width").c_str()), atoi(body_tage.get_characteristic("height").c_str()), 0, 0, atoi(body_tage.get_characteristic("stickiness").c_str())/100.0))
+	if (!matter_part.init(X, Y, atoi(body_tage.get_characteristic("width").c_str()), atoi(body_tage.get_characteristic("height").c_str()), 0, 0, atoi(body_tage.get_characteristic("sticky").c_str())))
 		return false;
 
 	tilt = tilt_enum::down;
@@ -44,6 +44,8 @@ bool entity::init(tmx_file tmx_entity, float X, float Y, unsigned int ID)
 	damage_clock.restart();
 	alive = true;
 	id = ID;
+
+	status = entity_fly;
 
 	if (entity_tage.get_v_subtages_with_name("statuses").size() != 1)
 		return false;
@@ -131,9 +133,9 @@ float entity::get_dist_down()
 {
 	return matter_part.get_dist_down();
 }
-float entity::get_stickiness()
+float entity::is_sticky()
 {
-	return matter_part.get_stickiness();
+	return matter_part.is_sticky();
 }
 tilt_enum entity::get_tilt()
 {
@@ -167,12 +169,15 @@ unsigned int entity::get_id()
 {
 	return id;
 }
+entity_status_enum entity::get_status()
+{
+	return status;
+}
 void entity::run_left()
 {
 	if (alive)
 	{
-		//if (matter_part.get_position() == on_ground || matter_part.get_position() == stick_up || matter_part.get_position() == flying || matter_part.get_position() == in_right_down_angle || matter_part.get_position() == in_right_up_angle || matter_part.get_position() == in_right_down_border || matter_part.get_position() == in_right_up_border)
-		if (matter_part.get_position() == on_ground || matter_part.get_position() == flying || matter_part.get_position() == in_right_down_angle || matter_part.get_position() == in_right_up_angle || matter_part.get_position() == in_right_down_border || matter_part.get_position() == in_right_up_border)
+		if (matter_part.get_position() == on_ground || matter_part.get_position() == flying || matter_part.get_position() == in_right_down_angle || matter_part.get_position() == in_right_up_border)
 			matter_part.set_speed(-run_speed, matter_part.get_v_y());
 	}
 }
@@ -180,7 +185,7 @@ void entity::run_right()
 {
 	if (alive)
 	{
-		if (matter_part.get_position() == on_ground || matter_part.get_position() == stick_up || matter_part.get_position() == flying || matter_part.get_position() == in_left_down_angle || matter_part.get_position() == in_left_up_angle || matter_part.get_position() == in_left_down_border || matter_part.get_position() == in_left_up_border)
+		if (matter_part.get_position() == on_ground || matter_part.get_position() == flying || matter_part.get_position() == in_left_down_angle || matter_part.get_position() == in_left_up_border)
 			matter_part.set_speed(run_speed, matter_part.get_v_y());
 	}
 }
@@ -188,7 +193,7 @@ void entity::run_up()
 {
 	if (alive)
 	{
-		if (matter_part.get_position() == stick_left || matter_part.get_position() == stick_right || matter_part.get_position() == in_left_down_angle || matter_part.get_position() == in_right_down_angle || matter_part.get_position() == in_left_down_border || matter_part.get_position() == in_right_down_border)
+		if (matter_part.get_position() == stick_left || matter_part.get_position() == stick_right || matter_part.get_position() == in_left_down_angle || matter_part.get_position() == in_right_down_angle);
 			matter_part.set_speed(matter_part.get_v_x(), -run_speed);
 	}
 }
@@ -196,70 +201,88 @@ void entity::run_down()
 {
 	if (alive)
 	{
-		if (matter_part.get_position() == stick_left || matter_part.get_position() == stick_right || matter_part.get_position() == in_left_up_angle || matter_part.get_position() == in_right_up_angle || matter_part.get_position() == in_left_up_border || matter_part.get_position() == in_right_up_border)
+		if (matter_part.get_position() == stick_left || matter_part.get_position() == stick_right || matter_part.get_position() == in_left_up_border || matter_part.get_position() == in_right_up_border)
 			matter_part.set_speed(matter_part.get_v_x(), run_speed);
 	}
 }
-void entity::jump()
+bool entity::jump()
 {
+	static sf::Clock jump_control_clock;
+	static bool can_jump;
+	if (jumping_up_counter != 0 && jumping_up_counter != 1 && jumping_up_counter != 2)
+		return false;
+	if (jumping_up_counter == 0)
+		can_jump = false;
 	if (alive)
 	{
-		float new_v_y;
-		bool jumped = false;
-		if (matter_part.get_position() == on_ground)
+		float new_v_x, new_v_y;
+		if (matter_part.get_position() != flying && !can_jump)
 		{
-			//new_v_y = -jumping_acceleration * time;
-			matter_part.set_speed(matter_part.get_v_x(), -jump_speed);
-			jumped = true;
+			can_jump = true;
+			jump_control_clock.restart();
+			unstick();
 		}
-		if (matter_part.get_position() == stick_up)
+		if (can_jump)
 		{
-			matter_part.set_speed(matter_part.get_v_x(), jump_speed);
-			jumped = true;
+			jumping_up_counter = 2;
+			new_v_x = matter_part.get_v_x();
+			if (jump_control_clock.getElapsedTime().asSeconds() <= 0.25)
+				new_v_y = -jump_speed * (0.5 + 2 * jump_control_clock.getElapsedTime().asSeconds());
+			else
+			{
+				new_v_y = -jump_speed;
+				can_jump = false;
+			}
+			set_speed(new_v_x, new_v_y);
+		}
+
+		/*if (matter_part.get_position() == on_ground)
+		{
+			new_v_x = matter_part.get_v_x();
+			matter_part.set_speed(matter_part.get_v_x(), -jump_speed);
 		}
 		if (matter_part.get_position() == stick_left)
 		{
+			new_v_x = run_speed;
 			matter_part.set_speed(run_speed, -jump_speed);
-			jumped = true;
 		}
 		if (matter_part.get_position() == stick_right)
 		{
+			new_v_x = -run_speed;
 			matter_part.set_speed(-run_speed, -jump_speed);
-			jumped = true;
-		}
-		if (matter_part.get_position() == in_left_down_border)
-		{
-			matter_part.set_speed(-run_speed, jump_speed);
-			jumped = true;
 		}
 		if (matter_part.get_position() == in_left_up_border)
 		{
+			new_v_x = -run_speed;
 			matter_part.set_speed(-run_speed, -jump_speed);
-			jumped = true;
-		}
-		if (matter_part.get_position() == in_right_down_border)
-		{
-			matter_part.set_speed(run_speed, jump_speed);
-			jumped = true;
 		}
 		if (matter_part.get_position() == in_right_up_border)
 		{
+			new_v_x = run_speed;
 			matter_part.set_speed(run_speed, -jump_speed);
-			jumped = true;
+		}
+		if (matter_part.get_position() == in_left_down_angle)
+		{
+			new_v_x = run_speed;
+			matter_part.set_speed(run_speed, -jump_speed);
+		}
+		if (matter_part.get_position() == in_right_down_angle)
+		{
+			new_v_x = -run_speed;
+			matter_part.set_speed(-run_speed, -jump_speed);
 		}
 		if (jumped)
-			matter_part.unstick();
+			matter_part.unstick();*/
 	}
+	return true;
 }
 void entity::stay()
 {
 	if (alive)
 	{
-		if (matter_part.get_position() == on_ground || matter_part.get_position() == stick_up || matter_part.get_position() == flying)
+		if (matter_part.get_position() == on_ground || matter_part.get_position() == flying)
 			matter_part.set_speed(0, matter_part.get_v_y());
-		if (matter_part.get_position() == stick_left || matter_part.get_position() == stick_right)
-			matter_part.set_speed(matter_part.get_v_x(), (1 - matter_part.get_stickiness()) * run_speed);
-		if (matter_part.get_position() == in_left_down_border || matter_part.get_position() == in_left_up_border || matter_part.get_position() == in_right_down_border || matter_part.get_position() == in_right_up_border)
+		if (matter_part.get_position() == in_left_up_border || matter_part.get_position() == in_right_up_border)
 			matter_part.set_speed(0, 0);
 	}
 }
@@ -267,12 +290,12 @@ void entity::unstick()
 {
 	matter_part.unstick();
 }
-unsigned int entity::number_frame_of_all_frames(unsigned int  all_frames)
+unsigned int entity::number_frame_of_all_frames(unsigned int  number_precycle_frames, unsigned int  number_cycle_frames)
 {
 	int result = frame_clock.getElapsedTime().asMilliseconds() / 40;
-	if (result >= all_frames)
+	if (result >= number_precycle_frames + number_cycle_frames)
 	{
-		result = 0;
+		result = number_precycle_frames;
 		frame_clock.restart();
 	}
 
@@ -281,13 +304,13 @@ unsigned int entity::number_frame_of_all_frames(unsigned int  all_frames)
 bool entity::update(float time)
 {
 	matter_part.update(time);
-	if (matter_part.get_position() == flying || matter_part.get_position() == on_ground || matter_part.get_position() == in_right_down_border || matter_part.get_position() == in_right_down_angle)
+	if (matter_part.get_position() == flying || matter_part.get_position() == on_ground || matter_part.get_position() == in_right_down_angle)
 		tilt = tilt_enum::down;
-	if (matter_part.get_position() == stick_up || matter_part.get_position() == in_left_up_border || matter_part.get_position() == in_left_up_angle)
+	if (matter_part.get_position() == in_left_up_border)
 		tilt = tilt_enum::up;
-	if (matter_part.get_position() == stick_left || matter_part.get_position() == in_left_down_border || matter_part.get_position() == in_left_down_angle)
+	if (matter_part.get_position() == stick_left || matter_part.get_position() == in_left_down_angle)
 		tilt = tilt_enum::left;
-	if (matter_part.get_position() == stick_right || matter_part.get_position() == in_right_up_border || matter_part.get_position() == in_right_up_angle)
+	if (matter_part.get_position() == stick_right || matter_part.get_position() == in_right_up_border)
 		tilt = tilt_enum::right;
 	
 	if (matter_part.get_position() == on_ground)
@@ -317,22 +340,34 @@ bool entity::update(float time)
 		if (matter_part.get_v_y() < 0 && (dir == dir_left || dir == dir_zero))
 			dir = dir_right;
 	}
-	else if (matter_part.get_position() == stick_up)
-	{
-		if (matter_part.get_v_x() == 0 && dir == dir_zero)
-			dir = dir_right;
-		if (matter_part.get_v_x() > 0 && (dir == dir_right || dir == dir_zero))
-			dir = dir_left;
-		if (matter_part.get_v_x() < 0 && (dir == dir_left || dir == dir_zero))
-			dir = dir_right;
-	}
-	else if (matter_part.get_position() == in_left_down_angle || matter_part.get_position() == in_left_up_angle || matter_part.get_position() == in_right_up_angle || matter_part.get_position() == in_right_down_angle || matter_part.get_position() == in_left_down_border || matter_part.get_position() == in_left_up_border || matter_part.get_position() == in_right_up_border || matter_part.get_position() == in_right_down_border)
+	else if (matter_part.get_position() == in_left_down_angle || matter_part.get_position() == in_right_down_angle || matter_part.get_position() == in_left_up_border || matter_part.get_position() == in_right_up_border)
 	{
 		if (dir == dir_zero)
 			dir = dir_right;
 	}
 	else
 		dir = dir_zero;
+	
+	if (get_position() == flying)
+		status = entity_fly;
+	if (get_position() == on_ground)
+		if (get_v_x() != 0)
+			status = entity_run;
+		else
+			status = entity_calm;
+	if (get_position() == stick_left || get_position() == stick_right)
+		status = entity_stick;
+	if (get_position() == in_left_down_angle || get_position() == in_right_down_angle)
+		status = entity_in_corner;
+	if (get_position() == in_left_up_border || get_position() == in_right_up_border)
+		status = entity_in_border;
+	if (jumping_up_counter != 0)
+		status = entity_jump;
+
+	if (jumping_up_counter != 0 && jumping_up_counter != 1 && jumping_up_counter != 2)
+		return false;
+	if (jumping_up_counter != 0)
+		jumping_up_counter--;
 	return true;
 }
 
@@ -554,6 +589,38 @@ bool mud::update(float time)
 	return true;
 }
 
+bool dirt::translate_statuses_from_entity_to_dirt()
+{
+	switch (entity::get_status())
+	{
+	case entity_calm:
+		status = dirt_calm;
+		return true;
+	case entity_fly:
+		status = dirt_fly;
+		return true;
+	case entity_in_border:
+		status = dirt_in_border;
+		return true;
+	case entity_in_corner:
+		status = dirt_in_corner;
+		return true;
+	case entity_jump:
+		status = dirt_jump;
+		return true;
+	case entity_run:
+		status = dirt_run;
+		return true;
+	case entity_stick:
+		status = dirt_stick;
+		return true;
+	case entity_turn:
+		status = dirt_turn;
+		return true;
+	default:
+		return false;
+	}
+}
 bool dirt::init(std::string ADRESS, float X, float Y, unsigned int ID)
 {
 	tmx_file tmx_dirt;
@@ -561,7 +628,6 @@ bool dirt::init(std::string ADRESS, float X, float Y, unsigned int ID)
 		return false;
 	if (!entity::init(tmx_dirt, X, Y, ID))
 		return false;
-	status = dirt_fly;
 	v_muds.clear();
 	active_mud = false;
 	return true;
@@ -613,23 +679,9 @@ bool dirt::update(float time)
 	
 	if (!entity::update(time))
 		return false;
-	if (get_position() == flying)
-		status = dirt_fly;
-	if (get_position() == on_ground || get_position() == stick_up)
-		if (get_v_x() != 0)
-			status = dirt_run;
-		else
-			status = dirt_stick;
-	if (get_position() == stick_left || get_position() == stick_right)
-		if (get_v_y() != 0)
-			status = dirt_run;
-		else
-			status = dirt_stick;
-	if (get_position() == in_left_down_angle || get_position() == in_left_up_angle || get_position() == in_right_down_angle || get_position() == in_right_up_angle)
-		status = dirt_in_corner;
-	if (get_position() == in_left_down_border || get_position() == in_left_up_border || get_position() == in_right_down_border || get_position() == in_right_up_border)
-		status = dirt_in_border;
-
+	translate_statuses_from_entity_to_dirt();
+	cout << get_status() << ' ' << status << endl;
+	
 	return true;
 }
 

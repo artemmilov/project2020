@@ -1,6 +1,5 @@
 #include "drawer.h"
 #pragma warning(disable : 4996)
-// Just for fun!
 
 using namespace std;
 using namespace sf;
@@ -98,7 +97,7 @@ bool dirt_drawer::init(RenderWindow* WINDOW, std::string ADRESS)
 	if (!dirt_texture.loadFromImage(dirt_image))
 		return false;
 	dirt_sprite.setTexture(dirt_texture);
-	dirt_texture.setSmooth(true); //////////////////
+	//dirt_texture.setSmooth(true); //////////////////
 	
 	if (dirt_tage.get_v_subtages_with_name("statuses").size() != 1)
 		return false;
@@ -161,7 +160,8 @@ bool dirt_drawer::init(RenderWindow* WINDOW, std::string ADRESS)
 		ok = false;
 
 		entity_tile_data add_entity_tile_data;
-		add_entity_tile_data.v_tile_IntRect.clear();
+		add_entity_tile_data.v_tile_IntRect_precycle.clear();
+		add_entity_tile_data.v_tile_IntRect_cycle.clear();
 		
 		add_entity_tile_data.image_indent = { atoi(status_add_tage.get_characteristic("image_indent_x").c_str()), atoi(status_add_tage.get_characteristic("image_indent_y").c_str()) };
 		
@@ -169,6 +169,7 @@ bool dirt_drawer::init(RenderWindow* WINDOW, std::string ADRESS)
 		int t = 0, count = 0, cur_num;
 		string new_num = "";
 		char a;
+		bool precycle_read = false;
 		while (t < code_text.size())
 		{
 			a = code_text[t];
@@ -178,16 +179,30 @@ bool dirt_drawer::init(RenderWindow* WINDOW, std::string ADRESS)
 			}
 			else
 			{
-				cur_num = atoi(new_num.c_str()) - spark_tileset_temp.get_firstgid();
-				add_entity_tile_data.v_tile_IntRect.push_back(IntRect((cur_num % spark_tileset_temp.get_columns()) * width, (cur_num / spark_tileset_temp.get_columns()) * height, width, height));
-				new_num = "";
-				count++;
+				if (new_num != "")
+				{
+					cur_num = atoi(new_num.c_str()) - spark_tileset_temp.get_firstgid();
+					if (!precycle_read)
+						add_entity_tile_data.v_tile_IntRect_precycle.push_back(IntRect((cur_num % spark_tileset_temp.get_columns()) * width, (cur_num / spark_tileset_temp.get_columns()) * height, width, height));
+					else
+						add_entity_tile_data.v_tile_IntRect_cycle.push_back(IntRect((cur_num % spark_tileset_temp.get_columns()) * width, (cur_num / spark_tileset_temp.get_columns()) * height, width, height));
+					new_num = "";
+					count++;
+				}
 			}
+			if (a == ';')
+				precycle_read = true;
 			t++;
 		}
 		count++;
-		cur_num = atoi(new_num.c_str()) - spark_tileset_temp.get_firstgid();
-		add_entity_tile_data.v_tile_IntRect.push_back(IntRect((cur_num % spark_tileset_temp.get_columns()) * width, (cur_num / spark_tileset_temp.get_columns()) * height, width, height));
+		if (new_num != "")
+		{
+			cur_num = atoi(new_num.c_str()) - spark_tileset_temp.get_firstgid();
+			if (!precycle_read)
+				add_entity_tile_data.v_tile_IntRect_precycle.push_back(IntRect((cur_num % spark_tileset_temp.get_columns()) * width, (cur_num / spark_tileset_temp.get_columns()) * height, width, height));
+			else
+				add_entity_tile_data.v_tile_IntRect_cycle.push_back(IntRect((cur_num % spark_tileset_temp.get_columns()) * width, (cur_num / spark_tileset_temp.get_columns()) * height, width, height));
+		}
 		map_statuses[current_status] = add_entity_tile_data;
 	}
 
@@ -218,10 +233,13 @@ bool dirt_drawer::show(dirt* p_spark)
 		p_window->draw(mud_sprite);
 	}
 
-	int current_frame = p_spark->number_frame_of_all_frames(map_statuses[p_spark->get_status()].v_tile_IntRect.size());
-	if (current_frame >= map_statuses[p_spark->get_status()].v_tile_IntRect.size())
+	int current_frame = p_spark->number_frame_of_all_frames(map_statuses[p_spark->get_status()].v_tile_IntRect_precycle.size(), map_statuses[p_spark->get_status()].v_tile_IntRect_cycle.size());
+	if (current_frame >= map_statuses[p_spark->get_status()].v_tile_IntRect_precycle.size() + map_statuses[p_spark->get_status()].v_tile_IntRect_cycle.size() || current_frame < 0)
 		return false;
-	dirt_sprite.setTextureRect(map_statuses[p_spark->get_status()].v_tile_IntRect[current_frame]);
+	if (current_frame < map_statuses[p_spark->get_status()].v_tile_IntRect_precycle.size())
+		dirt_sprite.setTextureRect(map_statuses[p_spark->get_status()].v_tile_IntRect_precycle[current_frame]);
+	else
+		dirt_sprite.setTextureRect(map_statuses[p_spark->get_status()].v_tile_IntRect_cycle[current_frame - map_statuses[p_spark->get_status()].v_tile_IntRect_precycle.size()]);
 	
 	float indent_x = 0, indent_y = 0;
 	
@@ -327,7 +345,7 @@ bool drop_drawer::init(sf::RenderWindow* WINDOW, std::string ADRESS)
 	if (!drop_texture.loadFromImage(drop_image))
 		return false;
 	drop_sprite.setTexture(drop_texture);
-	drop_texture.setSmooth(true); //////////////////
+	//drop_texture.setSmooth(true); //////////////////
 
 	if (drop_tage.get_v_subtages_with_name("statuses").size() != 1)
 		return false;
@@ -365,7 +383,8 @@ bool drop_drawer::init(sf::RenderWindow* WINDOW, std::string ADRESS)
 		ok = false;
 
 		entity_tile_data add_entity_tile_data;
-		add_entity_tile_data.v_tile_IntRect.clear();
+		add_entity_tile_data.v_tile_IntRect_precycle.clear();
+		add_entity_tile_data.v_tile_IntRect_cycle.clear();
 
 		add_entity_tile_data.image_indent = { atoi(status_add_tage.get_characteristic("image_indent_x").c_str()), atoi(status_add_tage.get_characteristic("image_indent_y").c_str()) };
 
@@ -373,25 +392,40 @@ bool drop_drawer::init(sf::RenderWindow* WINDOW, std::string ADRESS)
 		int t = 0, count = 0, cur_num;
 		string new_num = "";
 		char a;
+		bool precycle_read = false;
 		while (t < code_text.size())
 		{
 			a = code_text[t];
+			if (a == ';')
+				precycle_read = true;
 			if (is_number(a))
 			{
 				new_num += a;
 			}
 			else
 			{
-				cur_num = atoi(new_num.c_str()) - drop_tileset_temp.get_firstgid();
-				add_entity_tile_data.v_tile_IntRect.push_back(IntRect((cur_num % drop_tileset_temp.get_columns()) * width, (cur_num / drop_tileset_temp.get_columns()) * height, width, height));
-				new_num = "";
-				count++;
+				if (new_num != "")
+				{
+					cur_num = atoi(new_num.c_str()) - drop_tileset_temp.get_firstgid();
+					if (!precycle_read)
+						add_entity_tile_data.v_tile_IntRect_precycle.push_back(IntRect((cur_num % drop_tileset_temp.get_columns()) * width, (cur_num / drop_tileset_temp.get_columns()) * height, width, height));
+					else
+						add_entity_tile_data.v_tile_IntRect_cycle.push_back(IntRect((cur_num % drop_tileset_temp.get_columns()) * width, (cur_num / drop_tileset_temp.get_columns()) * height, width, height));
+					new_num = "";
+					count++;
+				}
 			}
 			t++;
 		}
 		count++;
-		cur_num = atoi(new_num.c_str()) - drop_tileset_temp.get_firstgid();
-		add_entity_tile_data.v_tile_IntRect.push_back(IntRect((cur_num % drop_tileset_temp.get_columns()) * width, (cur_num / drop_tileset_temp.get_columns()) * height, width, height));
+		if (new_num != "")
+		{
+			cur_num = atoi(new_num.c_str()) - drop_tileset_temp.get_firstgid();
+			if (!precycle_read)
+				add_entity_tile_data.v_tile_IntRect_precycle.push_back(IntRect((cur_num % drop_tileset_temp.get_columns()) * width, (cur_num / drop_tileset_temp.get_columns()) * height, width, height));
+			else
+				add_entity_tile_data.v_tile_IntRect_cycle.push_back(IntRect((cur_num % drop_tileset_temp.get_columns()) * width, (cur_num / drop_tileset_temp.get_columns()) * height, width, height));
+		}
 		map_statuses[current_status] = add_entity_tile_data;
 	}
 
@@ -399,11 +433,11 @@ bool drop_drawer::init(sf::RenderWindow* WINDOW, std::string ADRESS)
 }
 bool drop_drawer::show(drop* p_drop)
 {
-	int current_frame = p_drop->number_frame_of_all_frames(map_statuses[p_drop->get_status()].v_tile_IntRect.size());
-	if (current_frame >= map_statuses[p_drop->get_status()].v_tile_IntRect.size())
+	int current_frame = p_drop->number_frame_of_all_frames(map_statuses[p_drop->get_status()].v_tile_IntRect_precycle.size(), map_statuses[p_drop->get_status()].v_tile_IntRect_cycle.size());
+	if (current_frame >= map_statuses[p_drop->get_status()].v_tile_IntRect_cycle.size())
 		return false;
 
-	drop_sprite.setTextureRect(map_statuses[p_drop->get_status()].v_tile_IntRect[current_frame]);
+	drop_sprite.setTextureRect(map_statuses[p_drop->get_status()].v_tile_IntRect_cycle[current_frame]);
 
 	float indent_x = 0, indent_y = 0;
 

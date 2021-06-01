@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<game_info>
+ <image source="../images/health.png" width="100" height="100"/>
+ <health x="0" y="0" width="100" height="100" indent_x="15" indent_y="15"/>
+</game_info>

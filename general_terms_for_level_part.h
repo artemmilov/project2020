@@ -21,11 +21,13 @@ static const float gravitation = 9.8 * from_meters_to_pixels / 10;
 static const float jumping_acceleration = 15 * from_meters_to_pixels / 10;
 static const float rapprochement = 5000;
 static const float resistance_factor = 0.1;
+static const float slipping_speed = 300;
 
-static enum position_enum {none_position, on_ground, stick_left, stick_right, stick_up, in_left_up_angle, in_right_up_angle, in_left_down_angle, in_right_down_angle, in_left_up_border, in_right_up_border, in_left_down_border, in_right_down_border, flying};
+static enum position_enum {none_position, on_ground, stick_left, stick_right, in_left_down_angle, in_right_down_angle, in_left_up_border, in_right_up_border, flying};
 static enum tilt_enum {up, down, left, right};
 static enum direct_enum {dir_left, dir_right, dir_zero};
 static enum level_mode_enum {play, pause, cut_scene};
+//static enum sticking_degree_enum {unsticky, slip_side, stick_side, stick_everything};
 	
 bool is_number(std::string);
 bool is_number(char);
@@ -92,12 +94,12 @@ private:
 	float v_x, v_y;
 	float dist_left, dist_right, dist_up, dist_down;
 	position_enum position;
-	float stickiness;
-	float standart_stickiness;
+	bool sticky;
+	bool general_sticky;
 	sf::Clock stick_clock;
 
 public:
-	bool init(float, float, float, float, float, float, float);
+	bool init(float, float, float, float, float, float, bool);
 	
 	float get_x();
 	float get_y();
@@ -114,7 +116,7 @@ public:
 	void set_dist_up(float);
 	void set_dist_down(float);
 	position_enum get_position();
-	float get_stickiness();
+	bool is_sticky();
 
 	void set_speed(float, float);
 	void set_position(position_enum);

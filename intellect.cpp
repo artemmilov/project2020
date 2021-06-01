@@ -7,30 +7,34 @@ void manual_controller::drive(dirt* p_dirt)
 {
 	p_dirt->stay();
 
-	static bool wasZ, go_left, go_right;
+	static bool wasZ, go_left, go_right, already_pushed_off;
 	if (keyboard.isKeyPressed(Keyboard::Z))
 	{
-		if (!wasZ)
+		if (p_dirt->get_position() == flying)
 		{
-			if (p_dirt->get_position() == stick_left || p_dirt->get_position() == in_right_down_border || p_dirt->get_position() == in_right_up_border)
-			{
-				go_right = true;
-			}
-			if (p_dirt->get_position() == stick_right || p_dirt->get_position() == in_left_down_border || p_dirt->get_position() == in_left_up_border)
-			{
-				go_left = true;
-			}
 			p_dirt->jump();
+			already_pushed_off = true;
 		}
-		wasZ = true;
+		else
+		{
+			if (!already_pushed_off)
+			{
+				if (p_dirt->get_position() == stick_left || p_dirt->get_position() == in_right_up_border || p_dirt->get_position() == in_left_down_angle)
+					go_right = true;
+				if (p_dirt->get_position() == stick_right || p_dirt->get_position() == in_left_up_border || p_dirt->get_position() == in_right_down_angle)
+					go_left = true;
+				p_dirt->jump();
+			}
+		}
 	}
 	else
 	{
-		wasZ = false;
+		already_pushed_off = false;
+		go_left = go_right = false;
 	}
-	if (p_dirt->get_position() != stick_right && p_dirt->get_position() != in_left_down_border && p_dirt->get_position() != in_left_up_border && p_dirt->get_position() != flying)
+	if (p_dirt->get_position() != stick_right && p_dirt->get_position() != in_left_up_border && p_dirt->get_position() != in_right_down_angle && p_dirt->get_position() != flying)
 		go_left = false;
-	if (p_dirt->get_position() != stick_left && p_dirt->get_position() != in_right_down_border && p_dirt->get_position() != in_right_up_border && p_dirt->get_position() != flying)
+	if (p_dirt->get_position() != stick_left && p_dirt->get_position() != in_right_up_border && p_dirt->get_position() != in_left_down_angle && p_dirt->get_position() != flying)
 		go_right = false;
 	if (go_left)
 		p_dirt->run_left();
@@ -47,14 +51,6 @@ void manual_controller::drive(dirt* p_dirt)
 		p_dirt->run_left();
 		go_left = go_right = false;
 	}
-	//if (keyboard.isKeyPressed(Keyboard::Up))
-	//{
-	//	p_dirt->run_up();
-	//}
-	//if (keyboard.isKeyPressed(Keyboard::Down))
-	//{
-	//	p_dirt->run_down();
-	//}
 }
 void manual_controller::drive(drop* p_drop)
 {
@@ -65,11 +61,11 @@ void manual_controller::drive(drop* p_drop)
 	{
 		if (!wasZ)
 		{
-			if (p_drop->get_position() == stick_left || p_drop->get_position() == in_right_down_border || p_drop->get_position() == in_right_up_border)
+			if (p_drop->get_position() == stick_left || p_drop->get_position() == in_right_up_border || p_drop->get_position() == in_left_down_angle)
 			{
 				go_right = true;
 			}
-			if (p_drop->get_position() == stick_right || p_drop->get_position() == in_left_down_border || p_drop->get_position() == in_left_up_border)
+			if (p_drop->get_position() == stick_right|| p_drop->get_position() == in_left_up_border || p_drop->get_position() == in_right_down_angle)
 			{
 				go_left = true;
 			}
@@ -81,9 +77,9 @@ void manual_controller::drive(drop* p_drop)
 	{
 		wasZ = false;
 	}
-	if (p_drop->get_position() != stick_right && p_drop->get_position() != in_left_down_border && p_drop->get_position() != in_left_up_border && p_drop->get_position() != flying)
+	if (p_drop->get_position() != stick_right && p_drop->get_position() != in_left_up_border && p_drop->get_position() != flying)
 		go_left = false;
-	if (p_drop->get_position() != stick_left && p_drop->get_position() != in_right_down_border && p_drop->get_position() != in_right_up_border && p_drop->get_position() != flying)
+	if (p_drop->get_position() != stick_left && p_drop->get_position() != in_right_up_border && p_drop->get_position() != flying)
 		go_right = false;
 	if (go_left)
 		p_drop->run_left();

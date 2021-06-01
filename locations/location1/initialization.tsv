@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rooms>
+ <room name="room"/>
+ <room name="room2"/>
+ <room name="room3"/>
+</rooms>
+<transitions_map>
+ <transition name="trans1" first="room" second="room2"/>
+ <transition name="trans2" first="room" second="room3"/>
+</transitions_map>

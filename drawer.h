@@ -27,7 +27,8 @@ public:
 
 struct entity_tile_data
 {
-	std::vector <sf::IntRect> v_tile_IntRect;
+	std::vector <sf::IntRect> v_tile_IntRect_precycle;
+	std::vector <sf::IntRect> v_tile_IntRect_cycle;
 	std::pair <float, float> image_indent;
 };
 class dirt_drawer
@@ -49,6 +50,7 @@ private:
 	int width, height;
 
 	std::map <dirt_status_enum, entity_tile_data> map_statuses;
+	//std::map <dirt_extra_action_enum, entity_tile_data> map_extra_actions;
 public:
 	bool init(sf::RenderWindow*, std::string);
 	bool show(dirt*);

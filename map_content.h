@@ -7,6 +7,7 @@
 #include "general_terms_for_level_part.h"
 #include "tmx_reader.h"
 
+static enum entity_status_enum { entity_calm, entity_run, entity_jump, entity_turn, entity_fly, entity_stick, entity_in_corner, entity_in_border };
 class entity
 {
 private:
@@ -22,10 +23,14 @@ private:
 
 	unsigned int id;
 
+	entity_status_enum status;
+
 	sf::Clock frame_clock;
 
 	friend class mechanical_interactor;
 	friend class dirt_interactor;
+
+	unsigned int jumping_up_counter;
 
 	void cause_damage(int);
 	void replenish_health(int);
@@ -46,7 +51,7 @@ public:
 	float get_dist_right();
 	float get_dist_up();
 	float get_dist_down();
-	float get_stickiness();
+	float is_sticky();
 	tilt_enum get_tilt();
 	direct_enum get_dir();
 	int get_health();
@@ -55,16 +60,17 @@ public:
 	float get_run_speed();
 	float get_jump_speed();
 	unsigned int get_id();
+	entity_status_enum get_status();
 
 	void run_left();
 	void run_right();
 	void run_up();
 	void run_down();
-	void jump();
+	bool jump();
 	void stay();
 	void unstick();
 
-	unsigned int number_frame_of_all_frames(unsigned int);
+	unsigned int number_frame_of_all_frames(unsigned int, unsigned int);
 
 	bool update(float);
 };
@@ -78,7 +84,7 @@ struct mud_segment
 	float right;
 	direct_enum dir;
 };
-class mud :public circumstance
+class mud : public circumstance
 {
 private:
 	//float x_checkbox;
@@ -115,7 +121,8 @@ private:
 	dirt_status_enum status;
 	std::vector <mud> v_muds;
 	bool active_mud;
-
+	
+	bool translate_statuses_from_entity_to_dirt();
 public:
 	bool init(std::string, float, float, unsigned int);
 

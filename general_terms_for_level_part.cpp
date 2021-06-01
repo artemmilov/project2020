@@ -179,7 +179,7 @@ float static_body::get_height()
 	return height;
 }
 
-bool body::init(float X, float Y, float WIDTH, float HEIGHT, float VX, float VY, float STICKINESS)
+bool body::init(float X, float Y, float WIDTH, float HEIGHT, float VX, float VY, bool GENERAL_STICKY)
 {
 	x = X;
 	y = Y;
@@ -191,10 +191,7 @@ bool body::init(float X, float Y, float WIDTH, float HEIGHT, float VX, float VY,
 	v_y = VY;
 	dist_left = dist_right = dist_up = dist_down = INFINITY;
 	position = flying;
-	if (STICKINESS < 0 || STICKINESS > 1)
-		return false;
-	stickiness = STICKINESS;
-	standart_stickiness = STICKINESS;
+	general_sticky = GENERAL_STICKY;
 	stick_clock.restart();
 
 	return true;
@@ -259,9 +256,9 @@ position_enum body::get_position()
 {
 	return position;
 }
-float body::get_stickiness()
+bool body::is_sticky()
 {
-	return stickiness;
+	return sticky;
 }
 void body::set_speed(float VX, float VY)
 {
@@ -274,8 +271,11 @@ void body::set_position(position_enum pos)
 }
 void body::unstick()
 {
-	stickiness = 0;
-	stick_clock.restart();
+	if (general_sticky)
+	{
+		sticky = false;
+		stick_clock.restart();
+	}
 }
 void body::update(float cur_time)
 {
@@ -290,10 +290,15 @@ void body::update(float cur_time)
 
 	x += v_x * cur_time;
 	y += v_y * cur_time;
-	if (stick_clock.getElapsedTime().asMilliseconds() >= 10)
-		stickiness = standart_stickiness;
+	if ((stick_clock.getElapsedTime().asMilliseconds() >= 20) && general_sticky)
+		sticky = true;
 	if (position == flying || position == on_ground)
 		v_y += gravitation * cur_time;
+	if (position == stick_left || position == stick_right)
+		if (sticky)
+			v_y = slipping_speed;
+		else
+			v_y += gravitation * cur_time;
 	//if (position == stick_left)
 	//	v_x -= INFINITY;
 	//if (position == stick_right)

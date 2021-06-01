@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="left-up" compressionlevel="-1" width="10" height="10" tilewidth="150" tileheight="150" infinite="0" nextlayerid="5" nextobjectid="31">
+ <tileset firstgid="1" name="map" tilewidth="150" tileheight="150" tilecount="2" columns="2">
+  <image source="../images/map.png" width="300" height="150"/>
+ </tileset>
+ <layer id="4" name="tile_layer" width="10" height="10">
+  <data encoding="csv">
+1,1,1,1,1,1,1,1,1,1,
+1,2,2,2,2,2,2,2,2,1,
+1,2,2,2,2,2,2,2,2,1,
+1,2,2,2,2,2,2,2,2,1,
+1,2,2,2,2,2,2,2,2,1,
+1,2,2,1,1,1,1,2,2,1,
+1,2,2,1,1,1,1,2,2,1,
+1,2,2,1,1,1,1,2,2,1,
+1,2,2,1,1,1,1,2,2,1,
+1,1,1,1,1,1,1,1,1,1
+</data>
+ </layer>
+ <objectgroup id="2" name="body_wall">
+  <object id="1" x="0" y="0" width="150" height="300"/>
+  <object id="2" x="0" y="300" width="150" height="300"/>
+  <object id="3" x="0" y="600" width="150" height="300"/>
+  <object id="4" x="0" y="900" width="150" height="300"/>
+  <object id="5" x="0" y="1200" width="150" height="300"/>
+  <object id="6" x="150" y="0" width="300" height="150"/>
+  <object id="7" x="450" y="0" width="300" height="150"/>
+  <object id="8" x="750" y="0" width="300" height="150"/>
+  <object id="9" x="1050" y="0" width="300" height="150"/>
+  <object id="10" x="1350" y="0" width="150" height="300"/>
+  <object id="11" x="1350" y="300" width="150" height="300"/>
+  <object id="12" x="1350" y="600" width="150" height="300"/>
+  <object id="13" x="1350" y="900" width="150" height="300"/>
+  <object id="14" x="1350" y="1200" width="150" height="300"/>
+  <object id="15" x="1050" y="1350" width="300" height="150"/>
+  <object id="16" x="750" y="1350" width="150" height="150"/>
+  <object id="17" x="450" y="1350" width="300" height="150"/>
+  <object id="18" x="150" y="1350" width="300" height="150"/>
+  <object id="19" x="450" y="750" width="150" height="300"/>
+  <object id="20" x="450" y="1050" width="150" height="300"/>
+  <object id="21" x="600" y="750" width="150" height="300"/>
+  <object id="22" x="600" y="1050" width="150" height="300"/>
+  <object id="23" x="750" y="750" width="150" height="300"/>
+  <object id="24" x="900" y="750" width="150" height="300"/>
+  <object id="25" x="750" y="1050" width="150" height="300"/>
+  <object id="26" x="900" y="1050" width="150" height="300"/>
+  <object id="27" x="900" y="1350" width="150" height="150"/>
+ </objectgroup>
+ <objectgroup id="3" name="player_start">
+  <object id="28" x="300" y="900">
+   <point/>
+  </object>
+ </objectgroup>
+</map>

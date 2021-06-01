@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity max_health="3" run_speed="600" jump_speed="1500">
+ <body width="25" height="25" sticky="1"/>
+ <tileset firstgid="1" name="map" tilewidth="50" tileheight="50" tilecount="1" columns="1">
+ <image source="../images/spark.png" width="50" height="25"/>
+</tileset>
+ <statuses>
+  <calm image_indent_x_up="-12" image_indent_y_up="-12" image_indent_x_down="-12" image_indent_y_down="-12" image_indent_x_left="-12" image_indent_y_left="-12" image_indent_x_right="-12" image_indent_y_right="-12">
+1
+</calm>
+  <run image_indent_x_up="-12" image_indent_y_up="-12" image_indent_x_down="-12" image_indent_y_down="-12" image_indent_x_left="-12" image_indent_y_left="-12" image_indent_x_right="-12" image_indent_y_right="-12">
+2
+</run>
+  <jump image_indent_x_up="-12" image_indent_y_up="-12" image_indent_x_down="-12" image_indent_y_down="-12" image_indent_x_left="-12" image_indent_y_left="-12" image_indent_x_right="-12" image_indent_y_right="-12">
+3
+</jump>
+  <turn image_indent_x_up="-12" image_indent_y_up="-12" image_indent_x_down="-12" image_indent_y_down="-12" image_indent_x_left="-12" image_indent_y_left="-12" image_indent_x_right="-12" image_indent_y_right="-12">
+4
+</turn>
+  <fly image_indent_x_up="-12" image_indent_y_up="-12" image_indent_x_down="-12" image_indent_y_down="-12" image_indent_x_left="-12" image_indent_y_left="-12" image_indent_x_right="-12" image_indent_y_right="-12">
+5
+</fly>
+  <stick image_indent_x_up="-12" image_indent_y_up="-12" image_indent_x_down="-12" image_indent_y_down="-12" image_indent_x_left="-12" image_indent_y_left="-12" image_indent_x_right="-12" image_indent_y_right="-12">
+6
+</stick>
+  <in_corner image_indent_x_up="-12" image_indent_y_up="-12" image_indent_x_down="-12" image_indent_y_down="-12" image_indent_x_left="-12" image_indent_y_left="-12" image_indent_x_right="-12" image_indent_y_right="-12">
+7
+</in_corner>
+  <in_border image_indent_x_up="-12" image_indent_y_up="-12" image_indent_x_down="-12" image_indent_y_down="-12" image_indent_x_left="-12" image_indent_y_left="-12" image_indent_x_right="-12" image_indent_y_right="-12">
+8
+</in_border>
+</statuses>
+</entity>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity max_health="3" run_speed="600" jump_speed="3000">
+ <body width="50" height="50" sticky="1"/>
+ <tileset firstgid="1" name="map" tilewidth="50" tileheight="50" tilecount="1" columns="1">
+ <image source="../images/spark.png" width="50" height="400"/>
+</tileset>
+ <statuses>
+  <calm image_indent_x_up="0" image_indent_y_up="0" image_indent_x_down="0" image_indent_y_down="0" image_indent_x_left="0" image_indent_y_left="0" image_indent_x_right="0" image_indent_y_right="0">
+1
+</calm>
+  <run image_indent_x_up="0" image_indent_y_up="0" image_indent_x_down="0" image_indent_y_down="0" image_indent_x_left="0" image_indent_y_left="0" image_indent_x_right="0" image_indent_y_right="0">
+2
+</run>
+  <jump image_indent_x_up="0" image_indent_y_up="0" image_indent_x_down="0" image_indent_y_down="0" image_indent_x_left="0" image_indent_y_left="0" image_indent_x_right="0" image_indent_y_right="0">
+3
+</jump>
+  <turn image_indent_x_up="0" image_indent_y_up="0" image_indent_x_down="0" image_indent_y_down="0" image_indent_x_left="0" image_indent_y_left="0" image_indent_x_right="0" image_indent_y_right="0">
+4
+</turn>
+  <fly image_indent_x_up="0" image_indent_y_up="0" image_indent_x_down="0" image_indent_y_down="0" image_indent_x_left="0" image_indent_y_left="0" image_indent_x_right="0" image_indent_y_right="0">
+5
+</fly>
+  <stick image_indent_x_up="0" image_indent_y_up="0" image_indent_x_down="0" image_indent_y_down="0" image_indent_x_left="0" image_indent_y_left="0" image_indent_x_right="0" image_indent_y_right="0">
+6
+</stick>
+  <in_corner image_indent_x_up="0" image_indent_y_up="0" image_indent_x_down="0" image_indent_y_down="0" image_indent_x_left="0" image_indent_y_left="0" image_indent_x_right="0" image_indent_y_right="0">
+7
+</in_corner>
+  <in_border image_indent_x_up="0" image_indent_y_up="0" image_indent_x_down="0" image_indent_y_down="0" image_indent_x_left="0" image_indent_y_left="0" image_indent_x_right="0" image_indent_y_right="0">
+8
+</in_border>
+</statuses>
+</entity>
